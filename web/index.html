@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A new Flutter project.">
+
+  <!-- Set correct base path -->
+<!--  <base href="/DASH/"> &lt;!&ndash; Change 'repo-name' to your repository's name &ndash;&gt;-->
+
+<!--  <base href="$FLUTTER_BASE_HREF">-->
+
+  <base href="/bbn/">
+
+
+  <title>I-NEED-DASHBOARD</title>
+
+  <!-- Favicon and manifest -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-analytics.js"></script>
+
+  <!-- Firebase initialization -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBJrpvuhdd8osxuAZhIWdjgMb-R_6thgAo",
+      authDomain: "servicesapp2024.firebaseapp.com",
+      projectId: "servicesapp2024",
+      storageBucket: "servicesapp2024.appspot.com",
+      messagingSenderId: "978854599781",
+      appId: "1:978854599781:web:9417f6c4b4c16939497a8c",
+      measurementId: "G-TFRVB9KTT8"
+    };
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
+</head>
+<body>
+<script src="flutter_bootstrap.js" async></script>
+</body>
+</html>
