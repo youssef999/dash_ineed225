@@ -16,6 +16,7 @@ import 'package:path/path.dart'
     as Path; // Ensure to import this for path manipulation
 import 'package:uuid/uuid.dart';
 import 'package:yemen_services_dashboard/core/theme/colors.dart';
+import 'package:yemen_services_dashboard/features/categories/cat_market_text.dart';
 import 'package:yemen_services_dashboard/features/categories/edit_cat.dart';
 import 'package:yemen_services_dashboard/features/offers/cutom_button.dart';
 
@@ -404,7 +405,7 @@ String getRandomString(int length) {
           children: [
 
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 ElevatedButton(
                   style:
@@ -422,6 +423,25 @@ String getRandomString(int length) {
                             color: Colors.white, fontSize: 18)),
                   ),
                 ),
+
+                 ElevatedButton(
+                  style:
+                      ElevatedButton.styleFrom
+                      (backgroundColor: primaryColor),
+                  onPressed: (){
+                  Get.to(const CatMarkrtView());
+
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(' إضافة نص اعلاني للقسم ',
+                    style: GoogleFonts.cairo(
+                            color: Colors.white, fontSize: 18)),
+                  ),
+                ),
+
+
+                //
               ],
             ),
             const SizedBox(height: 20),
