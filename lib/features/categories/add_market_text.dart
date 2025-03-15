@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:yemen_services_dashboard/core/theme/colors.dart';
 
+// ignore: must_be_immutable
 class AddCatMarketText extends StatefulWidget {
 
   String cat;
-
  AddCatMarketText({super.key,required this.cat});
 
   @override
   State<AddCatMarketText> createState() => _AddCatMarketTextState();
 }
-
 class _AddCatMarketTextState extends State<AddCatMarketText> {
+  
   final TextEditingController _textController = TextEditingController();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   bool isLoading = false;
@@ -28,8 +28,8 @@ class _AddCatMarketTextState extends State<AddCatMarketText> {
 
 
   Future<void> _addCatMarketText() async {
-    if ( _textController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
+    if ( _textController.text.isEmpty) 
+  { ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("يرجى إدخال النص"),
           duration: Duration(seconds: 2),
@@ -37,25 +37,21 @@ class _AddCatMarketTextState extends State<AddCatMarketText> {
       );
       return;
     }
-
     setState(() {
       isLoading = true;
     });
-
     try {
       await _firestore.collection('catMarketText').add({
         'cat': widget.cat,
         'text': _textController.text,
        // 'createdAt': FieldValue.serverTimestamp(),
       });
-
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("تمت إضافة النص بنجاح"),
           duration: Duration(seconds: 2),
         ),
       );
-
       // Clear the form after successful submission
       _textController.clear();
       setState(() {
@@ -75,6 +71,7 @@ class _AddCatMarketTextState extends State<AddCatMarketText> {
     }
   }
 
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

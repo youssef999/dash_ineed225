@@ -1,17 +1,17 @@
-// ignore_for_file: non_constant_identifier_names
+import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:yemen_services_dashboard/core/theme/colors.dart';
+import 'package:yemen_services_dashboard/features/OFFERS2/add_offer.dart';
+import 'package:yemen_services_dashboard/features/OFFERS2/edit_offer.dart';
 import 'package:yemen_services_dashboard/features/OFFERS2/offersSub/offers_cat_view.dart';
 import 'package:yemen_services_dashboard/features/OFFERS2/offers_type.dart';
 import 'package:yemen_services_dashboard/features/offers/cutom_button.dart';
-import 'dart:io';
-import 'add_offer.dart';
-import 'edit_offer.dart';
+
 import 'offers_cats.dart';
 
 class OffersScreen extends StatefulWidget {
@@ -100,8 +100,6 @@ class _OffersScreenState extends State<OffersScreen> {
     ) ?? false;
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -118,7 +116,7 @@ class _OffersScreenState extends State<OffersScreen> {
           ),
         ],
       ),
-      body:ListView(
+      body: ListView(
         children: [
           const SizedBox(height: 11,),
           Row(
@@ -129,9 +127,7 @@ class _OffersScreenState extends State<OffersScreen> {
                 color1: Colors.blue,
                 text: 'عروض اسبوعية',
                 onPressed: () {
-
                   Get.to(OffersTypeView(type: 'weekly', title: 'عروض اسبوعية',));
-                  // Handle weekly offers
                 },
               ),
               CustomButton(
@@ -139,12 +135,9 @@ class _OffersScreenState extends State<OffersScreen> {
                 color1: Colors.green,
                 text: 'عروض يومية',
                 onPressed: () {
-                     Get.to(OffersTypeView(type: 'daily', title: 'عروض يومية',));
-                 
-                  
+                  Get.to(OffersTypeView(type: 'daily', title: 'عروض يومية',));
                 },
               ),
-              
             ],
           ),
           const Divider(),
@@ -159,7 +152,7 @@ class _OffersScreenState extends State<OffersScreen> {
             },
             ),
           ),
-           Padding(
+          Padding(
             padding: const EdgeInsets.only(bottom:20,top:20,left:48.0,right:48),
             child: CustomButton(
               color1: primary,
@@ -169,89 +162,83 @@ class _OffersScreenState extends State<OffersScreen> {
             },
             ),
           ),
-          //
-         const Divider(),
-         OffersCardWidget()
+          const Divider(),
+          OffersCardWidget(),
         ],
       ),
     );
-  
-}
+  }
 
+  Widget OffersCardWidget() {
+    return _isLoading
+        ? const Center(child: CircularProgressIndicator())
+        : Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: StreamBuilder<QuerySnapshot>(
+              stream: _firestore.collection('offers').snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-OffersCardWidget(){
-  return  Expanded(
-            child: _isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: StreamBuilder<QuerySnapshot>(
-                      stream: _firestore.collection('offers').snapshots(),
-                      builder: (context, snapshot) {
-                        if (!snapshot.hasData) {
-                          return const Center(child: CircularProgressIndicator());
-                        }
+                final offers = snapshot.data!.docs;
 
-                        final offers = snapshot.data!.docs;
+                return SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 18.0, right: 20, left: 60),
+                    child: Column(
+                      children: offers.map((offer) {
+                        final offerData = offer.data() as Map<String, dynamic>;
 
                         return Padding(
-                          padding: const EdgeInsets.only(top: 18.0, right: 20, left: 60),
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: offers.length,
-                            itemBuilder: (context, index) {
-                              final offer = offers[index];
-                              final offerData = offer.data() as Map<String, dynamic>;
-
-                              return Padding(
-                                padding: const EdgeInsets.only(top: 18.0, right: 20, left: 20),
-                                child: Card(
-                                  margin: const EdgeInsets.all(16),
-                                  child: ListTile(
-                                    leading: offerData['image'] != null
-                                        ? Image.network(
-                                            offerData['image'],
-                                            width: 80,
-                                            height: 80,
-                                            fit: BoxFit.cover,
-                                          )
-                                        : const Icon(Icons.image, size: 40),
-                                    title: Text(
-                                      offerData['title'],
-                                      style: const TextStyle(fontSize: 18),
-                                    ),
-                                    subtitle: Text(
-                                      offerData['description'],
-                                      style: const TextStyle(fontSize: 14),
-                                    ),
-                                    trailing: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        IconButton(
-                                          icon: const Icon(Icons.edit, size: 30),
-                                          onPressed: () {
-                                            Get.to(EditOfferScreen(
-                                              offerId: offer.id.toString(),
-                                              image: offerData['image']??'',
-                                            ));
-                                          },
-                                        ),
-                                        IconButton(
-                                          icon: const Icon(Icons.delete, size: 30),
-                                          onPressed: () => _deleteOffer(offer.id),
-                                        ),
-                                      ],
-                                    ),
+                          padding: const EdgeInsets.only(top: 18.0, right: 20, left: 20),
+                          child: Card(
+                            margin: const EdgeInsets.all(16),
+                            child: ListTile(
+                              leading: offerData['image'] != null
+                                  ? Image.network(
+                                      offerData['image'],
+                                      width: 80,
+                                      height: 80,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : const Icon(Icons.image, size: 40),
+                              title: Text(
+                                offerData['title'],
+                                style: const TextStyle(fontSize: 18),
+                              ),
+                              subtitle: Text(
+                                offerData['description'],
+                                style: const TextStyle(fontSize: 14),
+                              ),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(Icons.edit, size: 30),
+                                    onPressed: () {
+                                      Get.to(EditOfferScreen(
+                                        offerId: offer.id.toString(),
+                                        image: offerData['image'] ?? '',
+                                        email: offerData['email'] ?? '',
+                                      ));
+                                    },
                                   ),
-                                ),
-                              );
-                            },
+                                  IconButton(
+                                    icon: const Icon(Icons.delete, size: 30),
+                                    onPressed: () => _deleteOffer(offer.id),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         );
-                      },
+                      }).toList(),
                     ),
                   ),
+                );
+              },
+            ),
           );
-}
+  }
 }

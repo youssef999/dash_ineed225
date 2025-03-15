@@ -14,10 +14,11 @@ import '../categories/image_widget.dart';
 // ignore: must_be_immutable
 class EditOfferScreen extends StatefulWidget {
   final String offerId;
+  String email;
   String image;
 
   // ignore: use_super_parameters
-  EditOfferScreen({Key? key, required this.offerId, required this.image}) : super(key: key);
+  EditOfferScreen({Key? key, required this.offerId, required this.email,required this.image}) : super(key: key);
 
   @override
   _EditOfferScreenState createState() => _EditOfferScreenState();
@@ -257,6 +258,10 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                 child: Column(
                   children: [
                     // Dropdown to select service provider
+
+                    Text("مقدم الخدمة المختار سابقا"+" : "+
+                    widget.email.toString(),style: const TextStyle(color:Colors.grey,fontSize: 16),
+                    ),
                     DropdownButtonFormField<String>(
                       value: _selectedProviderId,
                       decoration: const InputDecoration(labelText: 'مقدم الخدمة'),

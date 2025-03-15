@@ -158,6 +158,7 @@ class _OffersSubCatViewState extends State<OffersSubCatView> {
                   Get.to(EditOfferScreen(
                     offerId: documentId, // Pass the document ID
                     image: offerData['image'] ?? '',
+                    email: offerData['email']??"",
                   ));
                 },
               ),
